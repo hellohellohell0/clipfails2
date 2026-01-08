@@ -67,14 +67,9 @@ function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLi
                         width: '100%',
                         height: '100%',
                         border: 'none',
-                        pointerEvents: 'none',
-                        transform: 'scale(1.35)',
-                        transformOrigin: 'center'
+                        pointerEvents: 'none'
                     }}
                 />
-                <div className={styles.playOverlay}>
-                    <div className={styles.playIcon}>▶</div>
-                </div>
             </div>
             <div className={styles.cardInfo}>
                 <h3 className={styles.cardTitle}>{clip.title}</h3>
