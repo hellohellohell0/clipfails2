@@ -15,59 +15,82 @@
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-    border-color: var(--accent);
-    z-index: 10;
-}
-
-.thumbnailPlaceholder {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    background-color: black;
-}
-
-.iframeOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
+.thumbnailWrapper {
     width: 100%;
     height: 100%;
-    z-index: 10;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 30%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    position: relative;
+    background: #0f0f11;
+    overflow: hidden;
 }
 
-.card:hover .iframeOverlay {
+.cardThumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.card:hover .cardThumbnail {
+    transform: scale(1.05);
+}
+
+.playOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    opacity: 0.8;
+}
+
+.card:hover .playOverlay {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.featuredThumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.playIconLarge {
+    font-size: 5rem;
+    color: white;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.fallbackText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #888;
+    display: none;
+    font-weight: 600;
+}
+
+/* If the img fails and we add this class */
+.showFallback .cardThumbnail {
+    opacity: 0;
+}
+
+.showFallback .fallbackText {
+    display: block;
 }
 
 .cardInfo {
     padding: 1.5rem;
-}
-
-.cardTitle {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--text-primary);
-}
-
-.cardStreamer {
-    font-size: 0.9rem;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 1rem;
+    flex-grow: 1;
+    /* ensure height fills */
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .stats {
@@ -80,6 +103,7 @@
     padding: 0.5rem;
     border-radius: 6px;
     justify-content: space-around;
+    margin-top: auto;
 }
 
 .statItem {
@@ -92,21 +116,6 @@
     color: var(--danger);
     transform: scale(1.1);
     cursor: pointer;
-}
-
-.facade {
-    width: 100%;
-    height: 100%;
-    background: #0f0f11;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.facadeText {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    font-weight: 600;
 }
 
 .playIcon {

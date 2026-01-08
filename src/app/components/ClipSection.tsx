@@ -38,7 +38,7 @@ function EyeIcon() {
     )
 }
 
-function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip) => void }) {
+function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLikes: number) => void }) {
     const [localLikes, setLocalLikes] = useState(clip.likes)
     const [isLiked, setIsLiked] = useState(false)
 
@@ -52,29 +52,27 @@ function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip) => void }
     }
 
     return (
-        <div className={styles.card} onClick={() => onPlay(clip)}>
+        <div className={styles.card} onClick={() => onPlay(clip, localLikes)}>
             <div className={styles.thumbnailPlaceholder}>
-                <div className={styles.iframeOverlay}>
-                    <span className={styles.playIcon}>▶</span>
-                </div>
-                {/* 
-                 Security Fix: Use a 'facade' approach.
-                 Instead of loading a heavy iframe that browsers block (portals/security),
-                 we show a styled div. The iframe ONLY loads in the modal.
-                 We try to get a thumbnail if possible, but without API key we use a placeholder.
-                 Wait, we CAN try the specialized twitch thumbnail URL hack:
-                 https://clips-media-assets2.twitch.tv/{embedId}-preview-480x272.jpg
-                 But embedId is usually a slug (e.g. "AbstruseStupid..."). 
-                 The old way: Twitch GQL or API. 
-                 Fallback: Just a nice dark placeholder with channel initials? 
-                 Or actually, using the iframe with pointer-events:none usually works in Chrome, but FF prevents it?
-                 User said: "To protect your security...". This is X-Frame-Options.
-                 If we can't show it embedded in grid, we MUST use a facade.
-               */}
-                <div className={styles.facade}>
-                    <div className={styles.facadeText}>
-                        Click to Play
+                <div className={styles.thumbnailWrapper}>
+                    <img
+                        src={`https://clips-media-assets2.twitch.tv/${clip.embedId}-preview-480x272.jpg`}
+                        className={styles.cardThumbnail}
+                        alt={clip.title}
+                        onError={(e) => {
+                            e.currentTarget.style.display = 'none'
+                            // Fallback to facade text if image fails
+                            const parent = e.currentTarget.parentElement
+                            if (parent) {
+                                parent.classList.add(styles.showFallback)
+                            }
+                        }}
+                    />
+                    <div className={styles.playOverlay}>
+                        <div className={styles.playIcon}>▶</div>
                     </div>
+                    {/* Fallback Text */}
+                    <div className={styles.fallbackText}>Click to Play</div>
                 </div>
             </div>
             <div className={styles.cardInfo}>
@@ -106,16 +104,13 @@ export default function ClipSection({
     onCloseModal: () => void
 }) {
 
-    // Modal Local Likes state? 
-    // Ideally if you like in modal it reflects in grid, but for "visual only" client side simplicty,
-    // we can just treat them separate or let the modal have its own ephemeral like state.
     const [modalLiked, setModalLiked] = useState(false)
     const [modalLikesCount, setModalLikesCount] = useState(0)
 
     // Reset modal like state when opening new clip
-    const handleModalOpen = (clip: Clip) => {
+    const handleModalOpen = (clip: Clip, currentLikes: number) => {
         setModalLiked(false)
-        setModalLikesCount(clip.likes)
+        setModalLikesCount(currentLikes)
         onPlayClip(clip)
     }
 

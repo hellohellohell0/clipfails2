@@ -57,22 +57,22 @@ export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: () 
             <div className={styles.featuredPlayerWrapper}>
                 <div className={styles.featuredCrop}>
                     {/* 
-                We use the Facade approach here too for consistency, 
-                OR we use the iframe with pointer-events-none and autoplay muted.
-                User said "only play it once you click on it... expands".
-                So keeping it as a 'poster' or muted loop is good, but if security blocks it, we need a fallback.
-                Let's use the iframe, but if it fails to load due to XFO, we use a nice background.
-                Actually, putting a div ON TOP prevents interaction, but doesn't solve XFO blocking HEADERS.
-                If Firefox blocks the iframe entirely, it looks broken.
-                For now, we hope the parent params fix the XFO issue.
-            */}
-                    <iframe
-                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=true&muted=true`}
-                        height="100%"
-                        width="100%"
-                        allowFullScreen={true}
-                        style={{ border: 'none', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
-                    />
+                      Use real thumbnail. Fallback to black if fails (handled by standard img error or just empty)
+                      https://clips-media-assets2.twitch.tv/{clip.embedId}-preview-480x272.jpg
+                    */}
+                    <div className={styles.thumbnailWrapper}>
+                        <img
+                            src={`https://clips-media-assets2.twitch.tv/${clip.embedId}-preview-480x272.jpg`}
+                            className={styles.featuredThumbnail}
+                            alt={clip.title}
+                            onError={(e) => {
+                                e.currentTarget.style.display = 'none'
+                            }}
+                        />
+                        <div className={styles.playOverlay}>
+                            <div className={styles.playIconLarge}>▶</div>
+                        </div>
+                    </div>
                 </div>
                 <div className={styles.gradientOverlay}></div>
             </div>
