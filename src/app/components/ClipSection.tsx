@@ -54,26 +54,23 @@ function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLi
     return (
         <div className={styles.card} onClick={() => onPlay(clip, localLikes)}>
             <div className={styles.thumbnailPlaceholder}>
-                <div className={styles.thumbnailWrapper}>
-                    <img
-                        src={`https://clips-media-assets2.twitch.tv/${clip.embedId}-preview-480x272.jpg`}
-                        className={styles.cardThumbnail}
-                        alt={clip.title}
-                        onError={(e) => {
-                            e.currentTarget.style.display = 'none'
-                            // Fallback to facade text if image fails
-                            const parent = e.currentTarget.parentElement
-                            if (parent) {
-                                parent.classList.add(styles.showFallback)
-                            }
-                        }}
-                    />
-                    <div className={styles.playOverlay}>
-                        <div className={styles.playIcon}>▶</div>
-                    </div>
-                    {/* Fallback Text */}
-                    <div className={styles.fallbackText}>Click to Play</div>
+                {/* 
+                  Iframe as Thumbnail. 
+                  pointerEvents: none ensures the user click goes to the Card, not the Iframe.
+                */}
+                <iframe
+                    src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=false&muted=true`}
+                    height="100%"
+                    width="100%"
+                    allowFullScreen={false}
+                    className={styles.cardIframe}
+                    style={{ border: 'none', pointerEvents: 'none' }}
+                />
+                <div className={styles.playOverlay}>
+                    <div className={styles.playIcon}>▶</div>
                 </div>
+                {/* Interaction Overlay */}
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 11, cursor: 'pointer' }}></div>
             </div>
             <div className={styles.cardInfo}>
                 <h3 className={styles.cardTitle}>{clip.title}</h3>
@@ -135,7 +132,7 @@ export default function ClipSection({
                         <button className={styles.closeBtn} onClick={onCloseModal}>×</button>
                         <div className={styles.modalPlayer}>
                             <iframe
-                                src={`https://clips.twitch.tv/embed?clip=${playingClip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=true`}
+                                src={`https://clips.twitch.tv/embed?clip=${playingClip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=true`}
                                 height="100%"
                                 width="100%"
                                 allowFullScreen={true}
