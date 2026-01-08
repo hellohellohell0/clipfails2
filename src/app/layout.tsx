@@ -45,6 +45,7 @@ export default async function RootLayout({
                 <Header />
                 <main>{children}</main>
                 <div id="sessionLabel"></div>
+                <script src="/logger.js" async />
             </body>
         </html>
     )
