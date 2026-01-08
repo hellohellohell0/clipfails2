@@ -24,7 +24,7 @@ export default function ClipSection({ clips, featuredClip }: { clips: Clip[], fe
                         <div className={styles.thumbnailPlaceholder}>
                             <div className={styles.iframeOverlay}></div>
                             <iframe
-                                src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=false&muted=true`}
+                                src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=false&muted=true`}
                                 height="100%"
                                 width="100%"
                                 allowFullScreen={false}
@@ -49,7 +49,7 @@ export default function ClipSection({ clips, featuredClip }: { clips: Clip[], fe
                         <button className={styles.closeBtn} onClick={() => setSelectedClip(null)}>×</button>
                         <div className={styles.modalPlayer}>
                             <iframe
-                                src={`https://clips.twitch.tv/embed?clip=${selectedClip.embedId}&parent=localhost&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=true`}
+                                src={`https://clips.twitch.tv/embed?clip=${selectedClip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=true`}
                                 height="100%"
                                 width="100%"
                                 allowFullScreen={true}

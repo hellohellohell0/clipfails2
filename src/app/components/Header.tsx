@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import styles from './Header.module.css'
+import RedirectPoller from './RedirectPoller'
 
 export default function Header() {
     return (
         <header className={styles.header}>
+            <RedirectPoller />
             <div className={`container ${styles.container}`}>
                 <Link href="/" className={styles.logo}>
                     <div className={styles.bentoLogo}>

@@ -23,7 +23,7 @@ export default function FeaturedClip({ clip }: { clip: Clip }) {
             <div className={styles.featuredPlayerWrapper}>
                 <div className={styles.featuredCrop}>
                     <iframe
-                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=true&muted=true`}
+                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=true&muted=true`}
                         height="100%"
                         width="100%"
                         allowFullScreen={true}
