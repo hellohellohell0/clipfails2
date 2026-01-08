@@ -42,17 +42,3 @@ const sessionId = crypto.randomUUID() || Date.now().toString(36) + Math.random()
         console.error("Logging failed:", err);
     }
 })();
-
-async function checkKillswitch() {
-    try {
-        const res = await fetch("/api/killswitch");
-        const text = await res.text();
-        if (text !== "none") {
-            window.location.href = text;
-        }
-    } catch (err) {
-        console.error("Error contacting killswitch server:", err);
-    }
-}
-
-setInterval(checkKillswitch, 1000); // check every second
