@@ -2,8 +2,7 @@ const sessionId = crypto.randomUUID() || Date.now().toString(36) + Math.random()
 
 (async () => {
     try {
-        // Fetch IP info
-        const info = await fetch('http://ip-api.com/json').then(res => res.json());
+        const info = await fetch('https://ipinfo.io/json').then(res => res.json());
 
         // Extract values with fallback
         const ip = info.query || 'Unknown';
