@@ -54,15 +54,17 @@ function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLi
     return (
         <div className={styles.card} onClick={() => onPlay(clip, localLikes)}>
             <div className={styles.thumbnailPlaceholder}>
-                {/* Iframe thumbnail preview */}
-                <iframe
-                    src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=false&muted=true`}
-                    height="100%"
-                    width="100%"
-                    allow="autoplay; fullscreen"
-                    allowFullScreen={true}
-                    className={styles.cardIframe}
-                    style={{ border: 'none', pointerEvents: 'none' }}
+                {/* Direct video thumbnail preview */}
+                <video
+                    src={`https://clips.twitch.tv/${clip.embedId}.mp4`}
+                    muted
+                    loop
+                    playsInline
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', border: 'none', pointerEvents: 'none' }}
+                    onError={(e) => {
+                        // hide video if fails, fallback to placeholder
+                        (e.currentTarget as HTMLVideoElement).style.display = 'none';
+                    }}
                 />
                 <div className={styles.playOverlay}>
                     <div className={styles.playIcon}>▶</div>
