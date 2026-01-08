@@ -38,7 +38,7 @@ function EyeIcon() {
     )
 }
 
-function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLikes: number) => void }) {
+function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLikes: number, isLiked: boolean) => void }) {
     const [localLikes, setLocalLikes] = useState(clip.likes)
     const [isLiked, setIsLiked] = useState(false)
 
@@ -52,7 +52,7 @@ function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLi
     }
 
     return (
-        <div className={styles.card} onClick={() => onPlay(clip, localLikes)}>
+        <div className={styles.card} onClick={() => onPlay(clip, localLikes, isLiked)}>
             <div className={styles.thumbnailPlaceholder}>
                 {/* Direct video thumbnail preview */}
                 <iframe
@@ -92,29 +92,27 @@ export default function ClipSection({
     clips,
     playingClip,
     onPlayClip,
-    onCloseModal
+    onCloseModal,
+    playingLikes,
+    playingIsLiked,
+    onModalLike
 }: {
     clips: Clip[],
     playingClip: Clip | null,
-    onPlayClip: (clip: Clip) => void,
-    onCloseModal: () => void
+    onPlayClip: (clip: Clip, likes: number, isLiked: boolean) => void,
+    onCloseModal: () => void,
+    playingLikes?: number,
+    playingIsLiked?: boolean,
+    onModalLike?: () => void
 }) {
 
-    const [modalLiked, setModalLiked] = useState(false)
-    const [modalLikesCount, setModalLikesCount] = useState(0)
-
     // Reset modal like state when opening new clip
-    const handleModalOpen = (clip: Clip, currentLikes: number) => {
-        setModalLiked(false)
-        setModalLikesCount(currentLikes)
-        onPlayClip(clip)
+    const handleModalOpen = (clip: Clip, currentLikes: number, isLiked: boolean) => {
+        onPlayClip(clip, currentLikes, isLiked)
     }
 
     const handleModalLike = () => {
-        if (!modalLiked) {
-            setModalLikesCount(n => n + 1)
-            setModalLiked(true)
-        }
+        if (onModalLike) onModalLike()
     }
 
     return (
@@ -148,7 +146,7 @@ export default function ClipSection({
                                     style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
                                     onClick={handleModalLike}
                                 >
-                                    <HeartIcon filled={modalLiked} /> {modalLikesCount.toLocaleString()}
+                                    <HeartIcon filled={!!playingIsLiked} /> {playingLikes?.toLocaleString()}
                                 </span>
                             </div>
                         </div>

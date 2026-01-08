@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './Clips.module.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface Clip {
     id: string
@@ -38,9 +38,16 @@ function EyeIcon() {
 }
 
 
-export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: () => void }) {
+export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: (likes: number, isLiked: boolean) => void }) {
     const [localLikes, setLocalLikes] = useState(clip ? clip.likes : 0)
     const [isLiked, setIsLiked] = useState(false)
+
+    useEffect(() => {
+        if (clip) {
+            setLocalLikes(clip.likes)
+            setIsLiked(false)
+        }
+    }, [clip])
 
     if (!clip) return null
 
@@ -53,7 +60,7 @@ export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: () 
     }
 
     return (
-        <section className={styles.featuredContainer} onClick={onPlay} style={{ cursor: 'pointer' }}>
+        <section className={styles.featuredContainer} onClick={() => onPlay(localLikes, isLiked)} style={{ cursor: 'pointer' }}>
             <div className={styles.featuredPlayerWrapper}>
                 <div className={styles.featuredCrop}>
                     {/* 
