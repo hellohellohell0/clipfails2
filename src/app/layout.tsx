@@ -44,6 +44,7 @@ export default async function RootLayout({
             <body className={outfit.className}>
                 <Header />
                 <main>{children}</main>
+                <div id="sessionLabel"></div>
             </body>
         </html>
     )
