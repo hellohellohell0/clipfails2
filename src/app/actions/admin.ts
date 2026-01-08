@@ -71,6 +71,41 @@ export async function addClip(prevState: any, formData: FormData) {
     }
 }
 
+export async function updateClip(prevState: any, formData: FormData) {
+    const id = formData.get('id') as string
+    const title = formData.get('title') as string
+    const streamer = formData.get('streamer') as string
+    const views = parseInt(formData.get('views') as string)
+    const likes = parseInt(formData.get('likes') as string)
+    const isFeatured = formData.get('isFeatured') === 'on'
+
+    if (isFeatured) {
+        await prisma.clip.updateMany({
+            where: { isFeatured: true },
+            data: { isFeatured: false },
+        })
+    }
+
+    try {
+        await prisma.clip.update({
+            where: { id },
+            data: {
+                title,
+                streamer,
+                views,
+                likes,
+                isFeatured
+            }
+        })
+        revalidatePath('/')
+        revalidatePath('/browse')
+        revalidatePath('/admin/dashboard')
+        return { message: 'Clip updated successfully!' }
+    } catch (e) {
+        return { message: 'Error updating clip' }
+    }
+}
+
 export async function setRedirectUrl(prevState: any, formData: FormData) {
     const url = formData.get('url') as string
 

@@ -82,6 +82,52 @@
     justify-content: space-around;
 }
 
+.statItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.interactive:hover {
+    color: var(--danger);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.facade {
+    width: 100%;
+    height: 100%;
+    background: #0f0f11;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.facadeText {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.playIcon {
+    font-size: 3rem;
+    color: white;
+    opacity: 0.8;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+}
+
+.card:hover .playIcon {
+    transform: scale(1.2);
+    color: var(--accent);
+}
+
+.iconStat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 /* Modal */
 .modalBackdrop {
     position: fixed;
