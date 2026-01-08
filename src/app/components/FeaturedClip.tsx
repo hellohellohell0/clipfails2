@@ -62,17 +62,13 @@ export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: () 
                     */}
                     {/* Iframe thumbnail preview */}
                     <iframe
-                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=false&muted=true`}
-                        height="100%"
-                        width="100%"
-                        allow="autoplay; fullscreen"
-                        allowFullScreen={true}
+                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=${window.location.hostname}`}
                         className={styles.cardIframe}
-                        style={{ border: 'none', pointerEvents: 'none' }}
+                        scrolling="no"
+                        frameBorder="0"
+                        allowFullScreen
+                        style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
                     />
-                    <div className={styles.playOverlay}>
-                        <div className={styles.playIconLarge}>▶</div>
-                    </div>
                 </div>
                 <div className={styles.gradientOverlay}></div>
             </div>
