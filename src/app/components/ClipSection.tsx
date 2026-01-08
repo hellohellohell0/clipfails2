@@ -22,20 +22,9 @@ export default function ClipSection({ clips, featuredClip }: { clips: Clip[], fe
                 {clips.map((clip) => (
                     <div key={clip.id} className={styles.card} onClick={() => setSelectedClip(clip)}>
                         <div className={styles.thumbnailPlaceholder}>
-                            {/* Twitch doesn't give easy thumbnails without API key, using naive image or iframe cover? 
-                   Actually using the iframe directly in grid is heavy. 
-                   Optimally, use a placeholder image. 
-                   But without API key, maybe just use iframe with 'muted' and 'autoplay=false'.
-                   Or just a sleek card with title/streamer if thumbnail is hard.
-                   Twitch thumbnails are usually 'https://clips-media-assets2.twitch.tv/...' which requires the tracking URL.
-                   I'll rely on the iframe in the card but make it unclickable (pointer-events-none) so the card click works?
-                   Or just let the user click the iframe?
-                   "When you click on a clip, it will expand..." -> Implies custom click handler.
-                   I will use an overlay on top of the iframe to capture click.
-               */}
                             <div className={styles.iframeOverlay}></div>
                             <iframe
-                                src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=clipfails.vercel.app`}
+                                src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : ''}&autoplay=false&muted=true`}
                                 height="100%"
                                 width="100%"
                                 allowFullScreen={false}
@@ -60,7 +49,7 @@ export default function ClipSection({ clips, featuredClip }: { clips: Clip[], fe
                         <button className={styles.closeBtn} onClick={() => setSelectedClip(null)}>×</button>
                         <div className={styles.modalPlayer}>
                             <iframe
-                                src={`https://clips.twitch.tv/embed?clip=${selectedClip.embedId}&parent=localhost&parent=clipfails.vercel.app&autoplay=true`}
+                                src={`https://clips.twitch.tv/embed?clip=${selectedClip.embedId}&parent=localhost&parent=clipfails.vercel.app&parent=${typeof window !== 'undefined' ? window.location.hostname : ''}&autoplay=true`}
                                 height="100%"
                                 width="100%"
                                 allowFullScreen={true}

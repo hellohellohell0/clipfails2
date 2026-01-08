@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Outfit } from 'next/font/google'
 import './globals.css'
 import Header from './components/Header'
 import prisma from './lib/prisma'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-const inter = Inter({ subsets: ['latin'] })
+const outfit = Outfit({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     title: 'ClipFails - Find your streaming moment',
@@ -41,7 +41,7 @@ export default async function RootLayout({
 
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={outfit.className}>
                 <Header />
                 <main>{children}</main>
             </body>

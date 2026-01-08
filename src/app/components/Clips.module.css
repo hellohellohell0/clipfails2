@@ -1,6 +1,7 @@
+/* Grid */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 2rem;
     padding: 2rem 0;
 }
@@ -8,22 +9,25 @@
 .card {
     background-color: var(--bg-secondary);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
     border-color: var(--accent);
+    z-index: 10;
 }
 
 .thumbnailPlaceholder {
     position: relative;
     aspect-ratio: 16 / 9;
-    background-color: #000;
+    background-color: black;
 }
 
 .iframeOverlay {
@@ -33,12 +37,17 @@
     width: 100%;
     height: 100%;
     z-index: 10;
-    /* Above iframe to capture clicks */
-    background: transparent;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 30%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover .iframeOverlay {
+    opacity: 1;
 }
 
 .cardInfo {
-    padding: 1rem;
+    padding: 1.5rem;
 }
 
 .cardTitle {
@@ -48,19 +57,29 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: var(--text-primary);
 }
 
 .cardStreamer {
     font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .stats {
     display: flex;
     gap: 1rem;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    border-radius: 6px;
+    justify-content: space-around;
 }
 
 /* Modal */
@@ -70,24 +89,25 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(5px);
+    background-color: rgba(5, 5, 5, 0.95);
+    backdrop-filter: blur(8px);
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: fadeIn 0.2s ease;
+    animation: fadeIn 0.3s ease;
 }
 
 .modalContent {
     background-color: var(--bg-secondary);
-    width: 90%;
-    max-width: 1000px;
-    border-radius: 16px;
+    width: 95%;
+    max-width: 1100px;
+    border-radius: 20px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    animation: scaleIn 0.2s ease;
+    box-shadow: 0 0 100px rgba(124, 58, 237, 0.1);
+    animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid var(--border);
 }
 
 .closeBtn {
@@ -95,21 +115,23 @@
     top: 1rem;
     right: 1rem;
     background: rgba(0, 0, 0, 0.5);
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     font-size: 1.5rem;
     cursor: pointer;
     z-index: 20;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
 }
 
 .closeBtn:hover {
     background: var(--accent);
+    transform: rotate(90deg);
 }
 
 .modalPlayer {
@@ -119,80 +141,142 @@
 
 .modalInfo {
     padding: 2rem;
+    background: linear-gradient(to top, var(--bg-tertiary), var(--bg-secondary));
 }
 
 .modalInfo h2 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
+    font-weight: 800;
+    line-height: 1.1;
 }
 
 .modalStreamer {
     color: var(--text-secondary);
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
 }
 
 .modalStats {
     display: flex;
     gap: 2rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--accent);
+    font-size: 1.1rem;
 }
 
 /* Featured */
 .featuredContainer {
     margin-bottom: 4rem;
-    border-bottom: 1px solid var(--border);
     position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    /* Important for crop */
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
-.featuredPlayer {
+.featuredPlayerWrapper {
     width: 100%;
     aspect-ratio: 21 / 9;
-    /* Ultra wide cinematic feel */
-    background-color: black;
-    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    /* Cinematic Ultrawide */
+    position: relative;
+    background: black;
+}
+
+.featuredCrop {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* The masking/gradient overlay */
+.gradientOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(5, 5, 5, 0.8), transparent 40%),
+        linear-gradient(to top, rgba(5, 5, 5, 0.9), transparent 50%);
+    pointer-events: none;
 }
 
 .featuredInfo {
     position: absolute;
-    bottom: 2rem;
+    bottom: 0;
     left: 0;
     width: 100%;
-    padding: 0 2rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    padding: 3rem;
+    z-index: 10;
 }
 
-.featuredLabel {
-    background-color: var(--accent);
-    color: white;
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    font-weight: 800;
+.featuredBadge {
+    background: rgba(124, 58, 237, 0.2);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 700;
     text-transform: uppercase;
     font-size: 0.8rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(5px);
+}
+
+.liveDot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--danger);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--danger);
+    animation: pulse 2s infinite;
 }
 
 .featuredTitle {
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 900;
     margin-bottom: 0.5rem;
-    line-height: 1.1;
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.featuredMeta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .featuredStreamer {
     font-size: 1.5rem;
-    color: #ddd;
-    margin-bottom: 1rem;
+    color: white;
+    font-weight: 600;
 }
 
 .featuredStats {
     font-size: 1.1rem;
-    color: var(--accent);
-    font-weight: 600;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 @keyframes fadeIn {
@@ -217,20 +301,28 @@
     }
 }
 
+@media (max-width: 1024px) {
+    .featuredTitle {
+        font-size: 3rem;
+    }
+}
+
 @media (max-width: 768px) {
-    .featuredPlayer {
+    .featuredPlayerWrapper {
         aspect-ratio: 16 / 9;
-        mask-image: none;
-        -webkit-mask-image: none;
     }
 
     .featuredInfo {
-        position: static;
         padding: 1.5rem;
-        text-shadow: none;
+        position: relative;
+        background: var(--bg-secondary);
     }
 
     .featuredTitle {
         font-size: 2rem;
+    }
+
+    .iframeOverlay {
+        background: transparent;
     }
 }

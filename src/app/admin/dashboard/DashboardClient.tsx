@@ -8,6 +8,7 @@ import styles from './dashboard.module.css'
 
 export default function DashboardClient({ clips, redirectUrl }: { clips: any[], redirectUrl: string | null }) {
     const [activeTab, setActiveTab] = useState<'clips' | 'redirect'>('clips')
+    const [useRandomStats, setUseRandomStats] = useState(true)
 
     // Create wrappers for actions to manage simplistic UI state feedback
     const [addState, addAction] = useFormState(addClip, { message: '' })
@@ -61,10 +62,27 @@ export default function DashboardClient({ clips, redirectUrl }: { clips: any[], 
 
                             <div className={styles.fullWidth}>
                                 <div className={styles.checkboxGroup}>
-                                    <input type="checkbox" name="randomStats" id="randomStats" defaultChecked />
-                                    <label htmlFor="randomStats">Randomize Views/Likes (Views: 120-1500, Likes: 15-30%)</label>
+                                    <input
+                                        type="checkbox"
+                                        name="randomStats"
+                                        id="randomStats"
+                                        checked={useRandomStats}
+                                        onChange={(e) => setUseRandomStats(e.target.checked)}
+                                    />
+                                    <label htmlFor="randomStats">Randomize Views/Likes</label>
                                 </div>
                             </div>
+
+                            {!useRandomStats && (
+                                <>
+                                    <div className="input-group">
+                                        <input type="number" name="views" placeholder="Views" className="input" required min="0" />
+                                    </div>
+                                    <div className="input-group">
+                                        <input type="number" name="likes" placeholder="Likes" className="input" required min="0" />
+                                    </div>
+                                </>
+                            )}
 
                             <button type="submit" className="btn btn-primary">Add Clip</button>
                         </form>
@@ -77,7 +95,7 @@ export default function DashboardClient({ clips, redirectUrl }: { clips: any[], 
                                 <div key={clip.id} className={styles.clipItem}>
                                     <div className={styles.clipInfo}>
                                         <h3>{clip.title} {clip.isFeatured && <span className={styles.featuredBadge}>FEATURED</span>}</h3>
-                                        <p>{clip.streamer} • {clip.views.toLocaleString()} views</p>
+                                        <p>{clip.streamer} • {clip.views.toLocaleString()} views • {clip.likes.toLocaleString()} likes</p>
                                     </div>
                                     <div className={styles.actions}>
                                         <form action={deleteClip.bind(null, clip.id)}>
