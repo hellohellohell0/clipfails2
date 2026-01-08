@@ -167,19 +167,22 @@
 
 /* Featured */
 .featuredContainer {
-    margin-bottom: 4rem;
+    margin: 2rem 0 4rem 0;
+    /* Add top margin */
     position: relative;
     border-radius: 24px;
     overflow: hidden;
-    /* Important for crop */
     border: 1px solid var(--border);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* Limit max height to prevent full screen takeover */
+    max-height: 60vh;
+    /* Ensure it has a reasonable aspect ratio but cropped */
+    aspect-ratio: 21 / 9;
 }
 
 .featuredPlayerWrapper {
     width: 100%;
-    aspect-ratio: 21 / 9;
-    /* Cinematic Ultrawide */
+    height: 100%;
     position: relative;
     background: black;
 }
@@ -191,15 +194,14 @@
     overflow: hidden;
 }
 
-/* The masking/gradient overlay */
 .gradientOverlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(5, 5, 5, 0.8), transparent 40%),
-        linear-gradient(to top, rgba(5, 5, 5, 0.9), transparent 50%);
+    background: linear-gradient(to right, rgba(5, 5, 5, 0.8), transparent 50%),
+        linear-gradient(to top, rgba(5, 5, 5, 0.9), transparent 60%);
     pointer-events: none;
 }
 
@@ -224,7 +226,7 @@
     font-weight: 700;
     text-transform: uppercase;
     font-size: 0.8rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     backdrop-filter: blur(5px);
 }
 
@@ -238,11 +240,13 @@
 }
 
 .featuredTitle {
-    font-size: 4rem;
+    font-size: 3.5rem;
+    /* Slightly smaller than 4rem */
     font-weight: 900;
     margin-bottom: 0.5rem;
     line-height: 1;
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    max-width: 800px;
 }
 
 .featuredMeta {
@@ -252,17 +256,17 @@
 }
 
 .featuredStreamer {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: white;
     font-weight: 600;
 }
 
 .featuredStats {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #ccc;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 @keyframes pulse {
@@ -303,26 +307,22 @@
 
 @media (max-width: 1024px) {
     .featuredTitle {
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
 }
 
 @media (max-width: 768px) {
-    .featuredPlayerWrapper {
+    .featuredContainer {
         aspect-ratio: 16 / 9;
+        max-height: none;
+        margin: 1rem 0 2rem 0;
     }
 
     .featuredInfo {
         padding: 1.5rem;
-        position: relative;
-        background: var(--bg-secondary);
     }
 
     .featuredTitle {
-        font-size: 2rem;
-    }
-
-    .iframeOverlay {
-        background: transparent;
+        font-size: 1.8rem;
     }
 }
