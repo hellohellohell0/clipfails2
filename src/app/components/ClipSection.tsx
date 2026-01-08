@@ -56,14 +56,21 @@ function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLi
             <div className={styles.thumbnailPlaceholder}>
                 {/* Direct video thumbnail preview */}
                 <iframe
-                    src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=${window.location.hostname}`}
+                    src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=true&muted=true`}
                     title={clip.title}
                     className={styles.cardIframe}
                     scrolling="no"
                     frameBorder="0"
                     allowFullScreen
                     loading="lazy"
-                    style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        border: 'none',
+                        pointerEvents: 'none',
+                        transform: 'scale(1.35)',
+                        transformOrigin: 'center'
+                    }}
                 />
                 <div className={styles.playOverlay}>
                     <div className={styles.playIcon}>▶</div>
