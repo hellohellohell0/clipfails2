@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Clip {
+  id         String   @id @default(uuid())
+  twitchUrl  String
+  embedId    String   @unique
+  title      String
+  streamer   String
+  views      Int
+  likes      Int
+  isFeatured Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model SystemSettings {
+  id          Int     @id @default(1)
+  redirectUrl String?
+}

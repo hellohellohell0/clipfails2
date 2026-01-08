@@ -1,66 +1,28 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import prisma from './lib/prisma'
+import FeaturedClip from './components/FeaturedClip'
+import ClipSection from './components/ClipSection'
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+export default async function Home() {
+    const featuredClip = await prisma.clip.findFirst({
+        where: { isFeatured: true },
+    })
+
+    // Get other clips (excluding featured if it exists)
+    const clips = await prisma.clip.findMany({
+        where: { isFeatured: false },
+        orderBy: { createdAt: 'desc' },
+    })
+
+    // If no featured clip, maybe take the first one or handle graceful fallback
+    // Logic: if featured exists, use it. If not, maybe showing nothing in featured area is safer than breaking.
+
+    return (
+        <div>
+            {featuredClip && <FeaturedClip clip={featuredClip} />}
+            <div className="container">
+                <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', marginTop: featuredClip ? 0 : '2rem' }}>Trending Clips</h2>
+                <ClipSection clips={clips} />
+            </div>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    )
 }
