@@ -60,12 +60,18 @@ export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: () 
                       Use real thumbnail. Fallback to black if fails (handled by standard img error or just empty)
                       https://clips-media-assets2.twitch.tv/{clip.embedId}-preview-480x272.jpg
                     */}
-                    {/* Static gradient placeholder */}
-                    <div className={styles.featuredGradient}>
-                        <div className={styles.featuredPreviewOverlay}>
-                            <div className={styles.playIconLarge}>▶</div>
-                            <div className={styles.clickToPlay}>Click to Play</div>
-                        </div>
+                    {/* Iframe thumbnail preview */}
+                    <iframe
+                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=false&muted=true`}
+                        height="100%"
+                        width="100%"
+                        allow="autoplay; fullscreen"
+                        allowFullScreen={true}
+                        className={styles.cardIframe}
+                        style={{ border: 'none', pointerEvents: 'none' }}
+                    />
+                    <div className={styles.playOverlay}>
+                        <div className={styles.playIconLarge}>▶</div>
                     </div>
                 </div>
                 <div className={styles.gradientOverlay}></div>
