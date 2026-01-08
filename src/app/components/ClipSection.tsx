@@ -54,23 +54,16 @@ function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLi
     return (
         <div className={styles.card} onClick={() => onPlay(clip, localLikes)}>
             <div className={styles.thumbnailPlaceholder}>
-                {/* 
-                  Iframe as Thumbnail. 
-                  pointerEvents: none ensures the user click goes to the Card, not the Iframe.
-                */}
-                <iframe
-                    src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=false&muted=true`}
-                    height="100%"
-                    width="100%"
-                    allowFullScreen={false}
-                    className={styles.cardIframe}
-                    style={{ border: 'none', pointerEvents: 'none' }}
-                />
+                {/* Static gradient placeholder - no iframe to avoid "refused to connect" */}
+                <div className={styles.thumbnailGradient}>
+                    <div className={styles.clipPreviewText}>
+                        <div className={styles.clipPreviewTitle}>{clip.title}</div>
+                        <div className={styles.clipPreviewStreamer}>{clip.streamer}</div>
+                    </div>
+                </div>
                 <div className={styles.playOverlay}>
                     <div className={styles.playIcon}>▶</div>
                 </div>
-                {/* Interaction Overlay */}
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 11, cursor: 'pointer' }}></div>
             </div>
             <div className={styles.cardInfo}>
                 <h3 className={styles.cardTitle}>{clip.title}</h3>

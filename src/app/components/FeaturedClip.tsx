@@ -60,21 +60,14 @@ export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: () 
                       Use real thumbnail. Fallback to black if fails (handled by standard img error or just empty)
                       https://clips-media-assets2.twitch.tv/{clip.embedId}-preview-480x272.jpg
                     */}
-                    {/* 
-                      Reverting to Iframe for thumbnail since image URLs are unreliable.
-                      Using pointer-events: none to ensure the container onClick fires (opening modal).
-                      Autoplay=false to just show the static player.
-                    */}
-                    <iframe
-                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=127.0.0.1&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&autoplay=false&muted=true`}
-                        height="100%"
-                        width="100%"
-                        allowFullScreen={false}
-                        style={{ border: 'none', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
-                    />
+                    {/* Static gradient placeholder */}
+                    <div className={styles.featuredGradient}>
+                        <div className={styles.featuredPreviewOverlay}>
+                            <div className={styles.playIconLarge}>▶</div>
+                            <div className={styles.clickToPlay}>Click to Play</div>
+                        </div>
+                    </div>
                 </div>
-                {/* Overlay to ensure clicks are captured even if pointer-events fails */}
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5, cursor: 'pointer' }}></div>
                 <div className={styles.gradientOverlay}></div>
             </div>
 
