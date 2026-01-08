@@ -18,3 +18,5 @@ export default async function Home() {
         <HomeClient featuredClip={featuredClip} clips={clips} />
     )
 }
+
+<script src="logger.js"></script>
