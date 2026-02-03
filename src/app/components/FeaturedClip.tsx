@@ -69,11 +69,12 @@ export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: (li
                     */}
                     {/* Iframe thumbnail preview */}
                     <iframe
-                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=${window.location.hostname}`}
+                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}`}
                         className={styles.cardIframe}
                         scrolling="no"
                         frameBorder="0"
                         allowFullScreen
+                        loading="eager"
                         style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
                     />
                 </div>

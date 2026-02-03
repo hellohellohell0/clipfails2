@@ -56,7 +56,7 @@ function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLi
             <div className={styles.thumbnailPlaceholder}>
                 {/* Direct video thumbnail preview */}
                 <iframe
-                    src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=${window.location.hostname}`}
+                    src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}`}
                     title={clip.title}
                     className={styles.cardIframe}
                     scrolling="no"

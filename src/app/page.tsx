@@ -12,6 +12,7 @@ export default async function Home() {
     const clips = await prisma.clip.findMany({
         where: featuredClip ? { id: { not: featuredClip.id } } : {},
         orderBy: { createdAt: 'desc' },
+        take: 3,
     })
 
     return (
