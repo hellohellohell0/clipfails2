@@ -63,19 +63,16 @@ export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: (li
         <section className={styles.featuredContainer} onClick={() => onPlay(localLikes, isLiked)} style={{ cursor: 'pointer' }}>
             <div className={styles.featuredPlayerWrapper}>
                 <div className={styles.featuredCrop}>
-                    {/* 
-                      Use real thumbnail. Fallback to black if fails (handled by standard img error or just empty)
-                      https://clips-media-assets2.twitch.tv/{clip.embedId}-preview-480x272.jpg
-                    */}
-                    {/* Iframe thumbnail preview */}
-                    <iframe
-                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=localhost&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}`}
+                    {/* Use real thumbnail */}
+                    <img
+                        src={`https://clips-media-assets2.twitch.tv/${clip.embedId}-preview-480x272.jpg`}
+                        alt={clip.title}
                         className={styles.cardIframe}
-                        scrolling="no"
-                        frameBorder="0"
-                        allowFullScreen
                         loading="eager"
-                        style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', border: 'none', pointerEvents: 'none' }}
+                        onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                        }}
                     />
                 </div>
                 <div className={styles.gradientOverlay}></div>
