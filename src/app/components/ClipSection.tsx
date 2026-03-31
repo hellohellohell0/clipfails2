@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import styles from './Clips.module.css'
 
 interface Clip {
@@ -41,6 +41,11 @@ function EyeIcon() {
 function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLikes: number, isLiked: boolean) => void }) {
     const [localLikes, setLocalLikes] = useState(clip.likes)
     const [isLiked, setIsLiked] = useState(false)
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     // Prevent event propagation so clicking heart doesn't open modal
     const handleLike = (e: React.MouseEvent) => {
@@ -54,23 +59,23 @@ function ClipCard({ clip, onPlay }: { clip: Clip, onPlay: (clip: Clip, currentLi
     return (
         <div className={styles.card} onClick={() => onPlay(clip, localLikes, isLiked)}>
             <div className={styles.thumbnailPlaceholder}>
-                {/* Direct video thumbnail preview */}
-                <img
-                    src={`https://clips-media-assets2.twitch.tv/${clip.embedId}-preview-480x272.jpg`}
-                    alt={clip.title}
-                    className={styles.cardIframe}
-                    loading="lazy"
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        border: 'none',
-                        pointerEvents: 'none'
-                    }}
-                    onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                    }}
-                />
+                {mounted ? (
+                    <iframe
+                        src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=${window.location.hostname}&parent=localhost&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&autoplay=false`}
+                        title={clip.title}
+                        className={styles.cardIframe}
+                        scrolling="no"
+                        frameBorder="0"
+                        allowFullScreen
+                        loading="lazy"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            border: 'none',
+                            pointerEvents: 'none'
+                        }}
+                    />
+                ) : null}
             </div>
             <div className={styles.cardInfo}>
                 <h3 className={styles.cardTitle}>{clip.title}</h3>

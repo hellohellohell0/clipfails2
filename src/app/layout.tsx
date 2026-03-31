@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation'
 const outfit = Outfit({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-    title: 'Clipfails - Find your streaming moment',
+    title: 'ClipChaos - Find your streaming moment',
     description: 'The best streaming clips from Twitch.',
 }
 

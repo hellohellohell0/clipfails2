@@ -14,7 +14,7 @@ export default function Header() {
                         </svg>
                     </div>
                     <div className={styles.logoText}>
-                        <h1>Clipfails</h1>
+                        <h1>ClipChaos</h1>
                     </div>
                 </Link>
 

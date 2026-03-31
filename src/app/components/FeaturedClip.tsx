@@ -41,8 +41,10 @@ function EyeIcon() {
 export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: (likes: number, isLiked: boolean) => void }) {
     const [localLikes, setLocalLikes] = useState(clip ? clip.likes : 0)
     const [isLiked, setIsLiked] = useState(false)
+    const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
+        setMounted(true)
         if (clip) {
             setLocalLikes(clip.likes)
             setIsLiked(false)
@@ -63,17 +65,17 @@ export default function FeaturedClip({ clip, onPlay }: { clip: Clip, onPlay: (li
         <section className={styles.featuredContainer} onClick={() => onPlay(localLikes, isLiked)} style={{ cursor: 'pointer' }}>
             <div className={styles.featuredPlayerWrapper}>
                 <div className={styles.featuredCrop}>
-                    {/* Use real thumbnail */}
-                    <img
-                        src={`https://clips-media-assets2.twitch.tv/${clip.embedId}-preview-480x272.jpg`}
-                        alt={clip.title}
-                        className={styles.cardIframe}
-                        loading="eager"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', border: 'none', pointerEvents: 'none' }}
-                        onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                        }}
-                    />
+                    {mounted ? (
+                        <iframe
+                            src={`https://clips.twitch.tv/embed?clip=${clip.embedId}&parent=${window.location.hostname}&parent=localhost&parent=clipfails.vercel.app&parent=clipfails.com&parent=www.clipfails.com&autoplay=false`}
+                            className={styles.cardIframe}
+                            scrolling="no"
+                            frameBorder="0"
+                            allowFullScreen
+                            loading="eager"
+                            style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
+                        />
+                    ) : null}
                 </div>
                 <div className={styles.gradientOverlay}></div>
             </div>
